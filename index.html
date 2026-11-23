@@ -1,327 +1,915 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Our Love Galaxy — 3D</title>
+<title>Our Little Universe ❤️</title>
+
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap');
-*{box-sizing:border-box}
-html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#03030d;color:#fff;font-family:Cairo,Arial,sans-serif}
-#scene{position:fixed;inset:0;width:100%;height:100%;display:block}
-#ui{position:fixed;inset:0;z-index:5;pointer-events:none}
-.header{position:absolute;top:17px;left:50%;transform:translateX(-50%);text-align:center;width:95%;text-shadow:0 0 18px #b16bff}
-.header h1{font-size:clamp(22px,4vw,38px);margin:0;color:#fff;letter-spacing:2px}
-.header p{font-size:11px;margin:0;color:#d9c7ff;letter-spacing:3px}
-.controls{position:absolute;top:95px;left:50%;transform:translateX(-50%);display:flex;gap:8px;justify-content:center;flex-wrap:wrap;width:95%;pointer-events:auto}
-button,.file-label{border:1px solid #e7b8ff88;background:#160f32cc;color:white;padding:9px 15px;border-radius:24px;font:600 12px Cairo;cursor:pointer;backdrop-filter:blur(10px);box-shadow:0 0 16px #a34bdf33;transition:.2s}
-button:hover,.file-label:hover{background:#49216b;box-shadow:0 0 22px #e45aff88;transform:translateY(-2px)}
-input{display:none}
-.bottom{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);width:95%;text-align:center;pointer-events:none}
-#message{font-size:clamp(15px,2.4vw,23px);color:#ffe6fa;text-shadow:0 0 16px #fa58d2}
-#help{font-size:11px;color:#c4b9e8;margin-top:5px}
-#intro{position:fixed;inset:0;z-index:10;display:grid;place-items:center;text-align:center;background:radial-gradient(ellipse at center,#271044,#090619 65%,#02020a);transition:opacity .9s,visibility .9s}
-#intro.hide{opacity:0;visibility:hidden;pointer-events:none}
-.intro-card{padding:25px;width:min(92%,560px)}
-.intro-card h2{font-size:clamp(30px,6vw,52px);color:#ffd4f3;text-shadow:0 0 25px #ff50c9;margin:10px}
-.intro-card p{color:#d9c9f3}
-.couple{font-size:75px;animation:float 2.6s ease-in-out infinite}
-@keyframes float{50%{transform:translateY(-12px)}}
-.enter{margin-top:18px;padding:12px 28px;background:linear-gradient(100deg,#e94cb7,#7455df);font-size:15px}
-#toast{position:fixed;z-index:20;bottom:75px;left:50%;transform:translateX(-50%);background:#1b1039ed;border:1px solid #ffffff33;border-radius:20px;padding:8px 15px;font-size:12px;opacity:0;transition:.25s;pointer-events:none}
-#toast.show{opacity:1}
-@media(max-width:600px){.controls{top:80px}.bottom{bottom:12px}#help{font-size:9px}}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #08020d;
+    color: white;
+    font-family: Georgia, serif;
+    overflow: hidden;
+}
+
+/* ================= INTRO ================= */
+
+#intro {
+    position: fixed;
+    inset: 0;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background:
+        radial-gradient(circle at center, #45102f, #17051e 55%, #05010a);
+    transition: opacity 1.3s, visibility 1.3s;
+}
+
+#intro.hide {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.intro-title {
+    font-size: clamp(27px, 5vw, 48px);
+    color: #ffb4df;
+    text-shadow: 0 0 20px #ff168e;
+    text-align: center;
+    margin-bottom: 12px;
+}
+
+.subtitle {
+    color: #f5b5d8;
+    margin-bottom: 35px;
+    font-size: 15px;
+}
+
+/* Cute animated couple */
+
+.couple {
+    position: relative;
+    width: 290px;
+    height: 230px;
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+.person {
+    position: relative;
+    width: 105px;
+    height: 165px;
+    animation: bob 2s ease-in-out infinite;
+}
+
+.person.second {
+    animation-delay: .4s;
+}
+
+.head {
+    position: absolute;
+    width: 82px;
+    height: 82px;
+    border-radius: 50%;
+    top: 0;
+    left: 11px;
+    background: #ffd4bd;
+    box-shadow: 0 0 20px #ff9acb55;
+    z-index: 2;
+}
+
+.hair {
+    position: absolute;
+    width: 87px;
+    height: 42px;
+    top: -3px;
+    left: 8px;
+    border-radius: 50% 50% 25% 25%;
+    background: #382039;
+    z-index: 3;
+}
+
+.second .hair {
+    background: #6b294e;
+}
+
+.eye {
+    position: absolute;
+    top: 37px;
+    width: 6px;
+    height: 9px;
+    border-radius: 50%;
+    background: #382039;
+    z-index: 4;
+}
+
+.eye.left { left: 29px; }
+.eye.right { right: 29px; }
+
+.smile {
+    position: absolute;
+    left: 33px;
+    top: 52px;
+    width: 17px;
+    height: 9px;
+    border-bottom: 2px solid #a64d68;
+    border-radius: 50%;
+    z-index: 4;
+}
+
+.body-person {
+    position: absolute;
+    top: 75px;
+    left: 12px;
+    width: 80px;
+    height: 90px;
+    border-radius: 25px 25px 12px 12px;
+    background: #8c3474;
+}
+
+.second .body-person {
+    background: #e56da8;
+}
+
+.person::after {
+    content: "";
+    position: absolute;
+    width: 40px;
+    height: 15px;
+    background: #ffd4bd;
+    top: 100px;
+    right: -7px;
+    border-radius: 20px;
+    transform: rotate(-35deg);
+    z-index: 5;
+}
+
+.second::after {
+    left: -7px;
+    transform: rotate(35deg);
+}
+
+@keyframes bob {
+    0%,100% { transform: translateY(0) rotate(0); }
+    50% { transform: translateY(-12px) rotate(3deg); }
+}
+
+.love-heart {
+    position: absolute;
+    color: #ff5eac;
+    font-size: 30px;
+    animation: heartFloat 2.5s ease-in-out infinite;
+    text-shadow: 0 0 15px #ff168e;
+}
+
+.love-heart.one {
+    top: 10px;
+    left: 15px;
+}
+
+.love-heart.two {
+    top: 30px;
+    right: 15px;
+    animation-delay: .7s;
+}
+
+.love-heart.three {
+    top: -5px;
+    left: 130px;
+    animation-delay: 1.2s;
+}
+
+@keyframes heartFloat {
+    0%,100% {
+        transform: translateY(0) scale(.8);
+        opacity: .5;
+    }
+    50% {
+        transform: translateY(-20px) scale(1.2);
+        opacity: 1;
+    }
+}
+
+/* Music selection */
+
+.music-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin: 10px 0 22px;
+}
+
+.music-label {
+    color: #ffc4e5;
+    font-size: 14px;
+}
+
+#musicFile {
+    display: none;
+}
+
+.choose-music {
+    padding: 11px 22px;
+    border: 1px solid #ff8ac8;
+    border-radius: 30px;
+    color: white;
+    background: #8b2868;
+    cursor: pointer;
+    box-shadow: 0 0 15px #ff168e55;
+}
+
+#musicName {
+    font-size: 12px;
+    color: #ffb5db;
+    max-width: 260px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.enter-btn {
+    padding: 14px 45px;
+    border: none;
+    border-radius: 35px;
+    color: #420b2d;
+    background: linear-gradient(90deg, #ffb5dc, #ff65b1);
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 0 25px #ff168e88;
+    transition: .3s;
+}
+
+.enter-btn:hover {
+    transform: scale(1.08);
+    box-shadow: 0 0 35px #ff168e;
+}
+
+/* ================= GALAXY ================= */
+
+#scene {
+    width: 100vw;
+    height: 100vh;
+}
+
+#galaxyTitle {
+    position: fixed;
+    top: 25px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    z-index: 5;
+    pointer-events: none;
+    color: #ffb5df;
+    text-shadow: 0 0 18px #ff168e;
+}
+
+#galaxyTitle h1 {
+    font-size: clamp(24px, 5vw, 45px);
+}
+
+#galaxyTitle p {
+    margin-top: 8px;
+}
+
+#loveMessage {
+    position: fixed;
+    bottom: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #ffd4ed;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    text-shadow: 0 0 15px #ff168e;
+    z-index: 5;
+    white-space: nowrap;
+    animation: glow 2s infinite alternate;
+    pointer-events: none;
+}
+
+@keyframes glow {
+    from { opacity: .65; }
+    to { opacity: 1; text-shadow: 0 0 30px #ff168e; }
+}
+
+#musicControl {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 10;
+    padding: 10px 16px;
+    border-radius: 25px;
+    border: 1px solid #ff8ac8;
+    color: white;
+    background: #6c174e;
+    cursor: pointer;
+}
+
+@media(max-width:600px) {
+    #loveMessage {
+        font-size: 14px;
+    }
+
+    .couple {
+        transform: scale(.85);
+        margin-bottom: 5px;
+    }
+}
 </style>
-</head>
-<body>
-<canvas id="scene"></canvas>
-<div id="ui">
- <div class="header"><h1>OUR LOVE GALAXY</h1><p>INFINITE STARS • ONE LOVE</p></div>
- <div class="controls">
-  <label class="file-label" for="musicFile">♫ اختار الأغنية</label><input id="musicFile" type="file" accept="audio/*">
-  <button id="musicBtn">▶ تشغيل الموسيقى</button>
-  <button id="messageBtn">♡ رسالة حب</button>
-  <button id="pauseBtn">Ⅱ إيقاف الحركة</button>
-  <button id="resetBtn">◎ إعادة الكاميرا</button>
- </div>
- <div class="bottom"><div id="message">وسط مليارات النجوم… إنتِ مجرتي المفضلة ✨</div><div id="help">اسحب بالزر الأيسر للدوران • عجلة الماوس للتقريب والتبعيد • زر Reset لإعادة المنظور</div></div>
-</div>
-<div id="intro"><div class="intro-card"><div class="couple">🧑🏻‍🚀 💗 👩🏻‍🚀</div><h2>Our Little Universe</h2><p>عالم واسع… وكل نجمة فيه بتحكي حكاية</p><button class="enter" id="enterBtn">ENTER OUR GALAXY ✨</button></div></div>
-<div id="toast"></div>
-<audio id="audio" loop></audio>
 
 <script type="importmap">
-{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}
-</script>
-<script type="module">
-import * as THREE from 'three';
-import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
-
-const canvas=document.querySelector('#scene');
-const scene=new THREE.Scene();
-scene.background=new THREE.Color(0x03030d);
-scene.fog=new THREE.FogExp2(0x08051b,0.0019);
-
-const camera=new THREE.PerspectiveCamera(52,innerWidth/innerHeight,.1,1000);
-camera.position.set(0,24,48);
-
-const renderer=new THREE.WebGLRenderer({canvas,antialias:true});
-renderer.setPixelRatio(Math.min(devicePixelRatio,2));
-renderer.setSize(innerWidth,innerHeight);
-renderer.outputColorSpace=THREE.SRGBColorSpace;
-renderer.toneMapping=THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure=1.15;
-
-const controls=new OrbitControls(camera,renderer.domElement);
-controls.enableDamping=true;
-controls.dampingFactor=.055;
-controls.minDistance=13;
-controls.maxDistance=100;
-controls.maxPolarAngle=Math.PI*.88;
-controls.target.set(0,0,0);
-controls.update();
-
-scene.add(new THREE.AmbientLight(0x9b8bc9,1.25));
-const coreLight=new THREE.PointLight(0xff72d5,85,85);coreLight.position.set(0,1,0);scene.add(coreLight);
-const blueLight=new THREE.PointLight(0x657aff,55,75);blueLight.position.set(-18,8,-12);scene.add(blueLight);
-const goldLight=new THREE.PointLight(0xffb5d8,35,55);goldLight.position.set(16,-4,12);scene.add(goldLight);
-
-const galaxy=new THREE.Group();scene.add(galaxy);
-const clock=new THREE.Clock();
-let running=true;
-
-function glowTexture(){
- const c=document.createElement('canvas');c.width=c.height=128;
- const x=c.getContext('2d'),g=x.createRadialGradient(64,64,0,64,64,64);
- g.addColorStop(0,'rgba(255,255,255,1)');
- g.addColorStop(.12,'rgba(255,210,250,.9)');
- g.addColorStop(.34,'rgba(210,100,255,.34)');
- g.addColorStop(1,'rgba(100,60,255,0)');
- x.fillStyle=g;x.fillRect(0,0,128,128);return new THREE.CanvasTexture(c);
-}
-const glowMap=glowTexture();
-function glow(parent,x,y,z,size,color){
- const s=new THREE.Sprite(new THREE.SpriteMaterial({map:glowMap,color,transparent:true,opacity:.8,blending:THREE.AdditiveBlending,depthWrite:false}));
- s.position.set(x,y,z);s.scale.set(size,size,size);parent.add(s);return s;
-}
-
-// Background stars
-const starN=8500,starPositions=new Float32Array(starN*3),starColors=new Float32Array(starN*3);
-const starPalette=[0xffffff,0xb9caff,0xffb9e8,0xd6baff,0xa5f3ff].map(c=>new THREE.Color(c));
-for(let i=0;i<starN;i++){
- const r=55+Math.random()*330,a=Math.random()*Math.PI*2,u=Math.random()*2-1;
- starPositions[3*i]=Math.cos(a)*r*Math.sqrt(1-u*u);
- starPositions[3*i+1]=u*r*.7;
- starPositions[3*i+2]=Math.sin(a)*r*Math.sqrt(1-u*u);
- const col=starPalette[Math.floor(Math.random()*starPalette.length)];
- starColors[3*i]=col.r;starColors[3*i+1]=col.g;starColors[3*i+2]=col.b;
-}
-const starGeo=new THREE.BufferGeometry();
-starGeo.setAttribute('position',new THREE.BufferAttribute(starPositions,3));
-starGeo.setAttribute('color',new THREE.BufferAttribute(starColors,3));
-const starField=new THREE.Points(starGeo,new THREE.PointsMaterial({size:.34,vertexColors:true,transparent:true,opacity:.92,sizeAttenuation:true}));
-scene.add(starField);
-
-// Colorful spiral arms
-const armColors=[0xff78d5,0x9b83ff,0x62cfff,0xffb1e8,0x9e8bff];
-for(let arm=0;arm<5;arm++){
- const count=2600,positions=new Float32Array(count*3),colors=new Float32Array(count*3);
- const base=new THREE.Color(armColors[arm]);
- for(let i=0;i<count;i++){
-  const t=Math.random(),radius=1.4+Math.pow(t,.78)*22;
-  const angle=arm*Math.PI*2/5+radius*.30+(Math.random()-.5)*.42;
-  const spread=(Math.random()-.5)*(1.1+radius*.10);
-  positions[3*i]=Math.cos(angle)*radius+Math.cos(angle+Math.PI/2)*spread;
-  positions[3*i+1]=(Math.random()-.5)*(.45+radius*.025);
-  positions[3*i+2]=Math.sin(angle)*radius+Math.sin(angle+Math.PI/2)*spread;
-  const shade=.45+Math.random()*.65;
-  colors[3*i]=base.r*shade;colors[3*i+1]=base.g*shade;colors[3*i+2]=base.b*shade;
- }
- const geo=new THREE.BufferGeometry();
- geo.setAttribute('position',new THREE.BufferAttribute(positions,3));
- geo.setAttribute('color',new THREE.BufferAttribute(colors,3));
- const pts=new THREE.Points(geo,new THREE.PointsMaterial({size:.20,vertexColors:true,transparent:true,opacity:.88,depthWrite:false,blending:THREE.AdditiveBlending}));
- galaxy.add(pts);
-}
-
-// Galactic core
-const core=new THREE.Mesh(new THREE.SphereGeometry(2.15,48,48),new THREE.MeshBasicMaterial({color:0xffb3ed}));
-galaxy.add(core);
-glow(galaxy,0,0,0,13,0xff55d8);
-glow(galaxy,0,0,0,7,0x9b70ff);
-
-// Orbit lines
-for(let i=0;i<3;i++){
- const ring=new THREE.Mesh(new THREE.TorusGeometry(7+i*4,.025,8,220),new THREE.MeshBasicMaterial({color:[0xff9bdf,0x9c8aff,0x74dfff][i],transparent:true,opacity:.48}));
- ring.rotation.x=Math.PI/2+(i-1)*.10;galaxy.add(ring);
-}
-
-// 3D heart
-function createHeartShape(){
- const s=new THREE.Shape();
- s.moveTo(0,-1.25);
- s.bezierCurveTo(-.25,-.45,-1.75,.35,-1.75,1.25);
- s.bezierCurveTo(-1.75,2.25,-.35,2.55,0,1.55);
- s.bezierCurveTo(.35,2.55,1.75,2.25,1.75,1.25);
- s.bezierCurveTo(1.75,.35,.25,-.45,0,-1.25);
- return s;
-}
-const heart=new THREE.Mesh(
- new THREE.ExtrudeGeometry(createHeartShape(),{depth:.65,bevelEnabled:true,bevelSegments:6,steps:1,bevelSize:.14,bevelThickness:.14,curveSegments:32}),
- new THREE.MeshStandardMaterial({color:0xff4db8,metalness:.28,roughness:.22,emissive:0x9e145d,emissiveIntensity:.8})
-);
-heart.position.set(0,3.3,8.5);
-heart.scale.set(1.25,1.25,1.25);
-galaxy.add(heart);
-glow(galaxy,0,4,8.3,8,0xff4db8);
-
-// Planets
-const moving=[];
-function makePlanet(radius,color,x,y,z,hasRing){
- const group=new THREE.Group();group.position.set(x,y,z);galaxy.add(group);
- const sphere=new THREE.Mesh(new THREE.SphereGeometry(radius,48,48),new THREE.MeshStandardMaterial({color,metalness:.35,roughness:.48,emissive:color,emissiveIntensity:.12}));
- group.add(sphere);
- const cloud=new THREE.Mesh(new THREE.SphereGeometry(radius*1.015,32,32),new THREE.MeshBasicMaterial({color:0xffffff,wireframe:true,transparent:true,opacity:.055}));
- group.add(cloud);
- if(hasRing){
-  const r=new THREE.Mesh(new THREE.TorusGeometry(radius*1.55,.09,12,120),new THREE.MeshStandardMaterial({color:0xffb2e8,metalness:.55,roughness:.3,emissive:0xff55c8,emissiveIntensity:.45}));
-  r.rotation.x=1.18;group.add(r);
- }
- glow(galaxy,x,y,z,radius*3.8,color);
- moving.push({obj:group,spin:.002+Math.random()*.003});
-}
-makePlanet(1.65,0x9275ff,-15,5,-8,true);
-makePlanet(1.25,0xff70c6,15,-4,-7,true);
-makePlanet(.9,0x55cfff,9,9,-17,false);
-makePlanet(.72,0xffbd79,-9,-8,4,false);
-makePlanet(1.05,0x9b8bff,23,3,-24,true);
-makePlanet(.62,0xff8fc9,-23,1,-20,false);
-
-// Floating hearts
-function heartGeometry(){
- return new THREE.ExtrudeGeometry(createHeartShape(),{depth:.12,bevelEnabled:true,bevelSegments:2,bevelSize:.035,bevelThickness:.035,curveSegments:12});
-}
-const tinyHeartGeo=heartGeometry();
-for(let i=0;i<32;i++){
- const mat=new THREE.MeshStandardMaterial({color:i%2?0xff83d0:0xc5a5ff,emissive:i%2?0x7d164e:0x38206f,emissiveIntensity:.6,roughness:.3});
- const h=new THREE.Mesh(tinyHeartGeo,mat);
- const a=Math.random()*Math.PI*2,r=9+Math.random()*20;
- h.position.set(Math.cos(a)*r,(Math.random()-.5)*12,Math.sin(a)*r);
- h.scale.setScalar(.12+Math.random()*.2);
- galaxy.add(h);moving.push({obj:h,spin:(Math.random()-.5)*.012,bob:true,phase:Math.random()*6});
-}
-
-// Roses
-function makeRose(x,y,z,scale=1){
- const g=new THREE.Group();g.position.set(x,y,z);g.scale.setScalar(scale);galaxy.add(g);
- const stem=new THREE.Mesh(new THREE.CylinderGeometry(.035,.05,.9,8),new THREE.MeshStandardMaterial({color:0x3b9c69}));
- stem.position.y=-.5;g.add(stem);
- for(let i=0;i<8;i++){
-  const a=i*Math.PI/4;
-  const petal=new THREE.Mesh(new THREE.SphereGeometry(.22,16,12),new THREE.MeshStandardMaterial({color:i%2?0xff438f:0xff8bc7,emissive:0x6b123f,emissiveIntensity:.35,roughness:.3}));
-  petal.scale.set(.85,1,.55);petal.position.set(Math.cos(a)*.16,.05,Math.sin(a)*.16);g.add(petal);
- }
- moving.push({obj:g,spin:.004,bob:true,phase:Math.random()*6});
-}
-makeRose(-19,3,10,1.25);
-makeRose(19,6,4,1);
-makeRose(-22,-5,-10,.85);
-makeRose(12,-9,-20,.8);
-
-// Luminous dust
-const dustN=1100,dustPos=new Float32Array(dustN*3);
-for(let i=0;i<dustN;i++){
- const a=Math.random()*Math.PI*2,r=5+Math.random()*28;
- dustPos[3*i]=Math.cos(a)*r;
- dustPos[3*i+1]=(Math.random()-.5)*7;
- dustPos[3*i+2]=Math.sin(a)*r;
-}
-const dustGeo=new THREE.BufferGeometry();
-dustGeo.setAttribute('position',new THREE.BufferAttribute(dustPos,3));
-const dust=new THREE.Points(dustGeo,new THREE.PointsMaterial({color:0xffc9f1,size:.11,transparent:true,opacity:.48,depthWrite:false}));
-galaxy.add(dust);
-
-// Animation
-function animate(){
- requestAnimationFrame(animate);
- const t=clock.getElapsedTime();
- if(running){
-  const pulse=1+Math.sin(t*2.4)*.025;
-  heart.scale.set(1.25*pulse,1.25*pulse,1.25);
-  heart.rotation.y=Math.sin(t*.45)*.10;
-  galaxy.rotation.y+=.00045;
-  starField.rotation.y+=.000025;
-  core.rotation.y+=.002;
-  dust.rotation.y-=.00025;
-  for(const item of moving){
-   item.obj.rotation.y+=item.spin;
-   if(item.bob)item.obj.position.y+=Math.sin(t*1.2+item.phase)*.0018;
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
   }
- }
- controls.update();
- renderer.render(scene,camera);
 }
+</script>
+</head>
+
+<body>
+
+<!-- INTRO SCREEN -->
+
+<section id="intro">
+
+    <h1 class="intro-title">Our Little Love Story</h1>
+
+    <p class="subtitle">
+        Every love story is beautiful, but ours is my favorite ❤️
+    </p>
+
+    <div class="couple">
+
+        <span class="love-heart one">♥</span>
+        <span class="love-heart two">♥</span>
+        <span class="love-heart three">♥</span>
+
+        <div class="person">
+            <div class="hair"></div>
+            <div class="head">
+                <div class="eye left"></div>
+                <div class="eye right"></div>
+                <div class="smile"></div>
+            </div>
+            <div class="body-person"></div>
+        </div>
+
+        <div class="person second">
+            <div class="hair"></div>
+            <div class="head">
+                <div class="eye left"></div>
+                <div class="eye right"></div>
+                <div class="smile"></div>
+            </div>
+            <div class="body-person"></div>
+        </div>
+
+    </div>
+
+    <div class="music-box">
+
+        <p class="music-label">
+            Choose a song for our universe 🎵
+        </p>
+
+        <label for="musicFile" class="choose-music">
+            Select Your Music
+        </label>
+
+        <input
+            type="file"
+            id="musicFile"
+            accept="audio/*"
+        >
+
+        <p id="musicName">No song selected</p>
+
+    </div>
+
+    <button class="enter-btn" id="enterBtn">
+        Enter Our Universe ✨
+    </button>
+
+</section>
+
+<!-- GALAXY SCREEN -->
+
+<div id="scene"></div>
+
+<div id="galaxyTitle">
+    <h1>Our Beautiful Universe</h1>
+    <p>Millions of stars, one special love ✦</p>
+</div>
+
+<div id="loveMessage">
+    I LOVE YOU ♥ FOREVER AND ALWAYS ♥
+</div>
+
+<button id="musicControl">Pause Music ♪</button>
+
+<audio id="music" loop></audio>
+
+<script type="module">
+
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+/* ================= MUSIC ================= */
+
+const music = document.getElementById('music');
+const musicFile = document.getElementById('musicFile');
+const musicName = document.getElementById('musicName');
+
+let selectedMusic = false;
+
+musicFile.addEventListener('change', function() {
+
+    const file = this.files[0];
+
+    if (!file) return;
+
+    if (music.src.startsWith('blob:')) {
+        URL.revokeObjectURL(music.src);
+    }
+
+    music.src = URL.createObjectURL(file);
+    musicName.textContent = file.name;
+    selectedMusic = true;
+});
+
+document.getElementById('enterBtn').addEventListener('click', async () => {
+
+    document.getElementById('intro').classList.add('hide');
+
+    if (selectedMusic) {
+        try {
+            await music.play();
+        } catch (error) {
+            console.log('Music could not start:', error);
+        }
+    }
+
+});
+
+document.getElementById('musicControl').addEventListener('click', () => {
+
+    if (!selectedMusic) {
+        alert('Please select a song first!');
+        return;
+    }
+
+    if (music.paused) {
+        music.play();
+        document.getElementById('musicControl').textContent = 'Pause Music ♪';
+    } else {
+        music.pause();
+        document.getElementById('musicControl').textContent = 'Play Music ♪';
+    }
+
+});
+
+/* ================= THREE JS ================= */
+
+const scene = new THREE.Scene();
+
+scene.background = new THREE.Color(0x030008);
+scene.fog = new THREE.FogExp2(0x030008, 0.012);
+
+const camera = new THREE.PerspectiveCamera(
+    55,
+    window.innerWidth / window.innerHeight,
+    0.1,
+    1000
+);
+
+camera.position.set(0, 15, 28);
+
+const renderer = new THREE.WebGLRenderer({
+    antialias: true
+});
+
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+document.getElementById('scene').appendChild(renderer.domElement);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+
+controls.enableDamping = true;
+controls.autoRotate = true;
+controls.autoRotateSpeed = 0.4;
+controls.minDistance = 12;
+controls.maxDistance = 50;
+
+scene.add(new THREE.AmbientLight(0xffffff, 1));
+
+const light = new THREE.PointLight(0xff1493, 5, 50);
+light.position.set(0, 5, 0);
+scene.add(light);
+
+/* ================= GALAXY ================= */
+
+const galaxy = new THREE.Group();
+scene.add(galaxy);
+
+const count = 18000;
+
+const positions = new Float32Array(count * 3);
+const colors = new Float32Array(count * 3);
+
+const pink = new THREE.Color(0xff1493);
+const purple = new THREE.Color(0x8a2be2);
+const white = new THREE.Color(0xffd6ed);
+
+for (let i = 0; i < count; i++) {
+
+    const radius = Math.random() * 12;
+    const arm = i % 5;
+
+    const angle =
+        arm * Math.PI * 2 / 5 +
+        radius * 0.75 +
+        (Math.random() - 0.5) * 0.8;
+
+    const spread = (Math.random() - 0.5) * 1.2;
+
+    positions[i * 3] =
+        Math.cos(angle) * radius +
+        Math.cos(angle + Math.PI / 2) * spread;
+
+    positions[i * 3 + 1] =
+        (Math.random() - 0.5) * 0.5;
+
+    positions[i * 3 + 2] =
+        Math.sin(angle) * radius +
+        Math.sin(angle + Math.PI / 2) * spread;
+
+    const color = pink.clone();
+
+    if (Math.random() > 0.5) {
+        color.lerp(purple, Math.random() * 0.7);
+    } else {
+        color.lerp(white, Math.random() * 0.6);
+    }
+
+    colors[i * 3] = color.r;
+    colors[i * 3 + 1] = color.g;
+    colors[i * 3 + 2] = color.b;
+}
+
+const galaxyGeometry = new THREE.BufferGeometry();
+
+galaxyGeometry.setAttribute(
+    'position',
+    new THREE.BufferAttribute(positions, 3)
+);
+
+galaxyGeometry.setAttribute(
+    'color',
+    new THREE.BufferAttribute(colors, 3)
+);
+
+const galaxyMaterial = new THREE.PointsMaterial({
+    size: 0.09,
+    vertexColors: true,
+    transparent: true,
+    opacity: 0.95,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false
+});
+
+const galaxyParticles = new THREE.Points(
+    galaxyGeometry,
+    galaxyMaterial
+);
+
+galaxy.add(galaxyParticles);
+
+/* ================= HEART ================= */
+
+const heartPositions = [];
+const heartColors = [];
+
+for (let i = 0; i < 3500; i++) {
+
+    const t = Math.random() * Math.PI * 2;
+    const fill = Math.sqrt(Math.random());
+
+    const x = 16 * Math.pow(Math.sin(t), 3);
+
+    const y =
+        13 * Math.cos(t) -
+        5 * Math.cos(2 * t) -
+        2 * Math.cos(3 * t) -
+        Math.cos(4 * t);
+
+    heartPositions.push(
+        x * 0.12 * fill,
+        5 + y * 0.12 * fill,
+        (Math.random() - 0.5) * 0.4
+    );
+
+    const color = new THREE.Color(0xff3da5);
+
+    color.lerp(
+        new THREE.Color(0xffd6ed),
+        Math.random() * 0.6
+    );
+
+    heartColors.push(color.r, color.g, color.b);
+}
+
+const heartGeometry = new THREE.BufferGeometry();
+
+heartGeometry.setAttribute(
+    'position',
+    new THREE.Float32BufferAttribute(heartPositions, 3)
+);
+
+heartGeometry.setAttribute(
+    'color',
+    new THREE.Float32BufferAttribute(heartColors, 3)
+);
+
+const heart = new THREE.Points(
+    heartGeometry,
+    new THREE.PointsMaterial({
+        size: 0.075,
+        vertexColors: true,
+        transparent: true,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false
+    })
+);
+
+galaxy.add(heart);
+
+/* ================= RINGS ================= */
+
+const rings = [];
+
+for (let i = 0; i < 4; i++) {
+
+    const geometry = new THREE.TorusGeometry(
+        3 + i * 2.3,
+        0.025,
+        8,
+        180
+    );
+
+    const material = new THREE.MeshBasicMaterial({
+        color: i % 2 === 0 ? 0xff168e : 0xb42aff,
+        transparent: true,
+        opacity: 0.55
+    });
+
+    const ring = new THREE.Mesh(geometry, material);
+
+    ring.rotation.x = Math.PI / 2;
+    ring.position.y = -0.3;
+
+    galaxy.add(ring);
+    rings.push(ring);
+}
+
+/* ================= STARS ================= */
+
+const starPositions = [];
+
+for (let i = 0; i < 3000; i++) {
+
+    starPositions.push(
+        (Math.random() - 0.5) * 100,
+        (Math.random() - 0.5) * 70,
+        (Math.random() - 0.5) * 100
+    );
+}
+
+const starGeometry = new THREE.BufferGeometry();
+
+starGeometry.setAttribute(
+    'position',
+    new THREE.Float32BufferAttribute(starPositions, 3)
+);
+
+const stars = new THREE.Points(
+    starGeometry,
+    new THREE.PointsMaterial({
+        color: 0xffc6e8,
+        size: 0.07,
+        transparent: true,
+        opacity: 0.8
+    })
+);
+
+scene.add(stars);
+
+/* ================= I LOVE YOU TEXT ================= */
+
+function createText(text) {
+
+    const canvas = document.createElement('canvas');
+
+    canvas.width = 512;
+    canvas.height = 128;
+
+    const ctx = canvas.getContext('2d');
+
+    ctx.font = 'bold 48px Georgia';
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#ff9bd5';
+    ctx.shadowColor = '#ff1493';
+    ctx.shadowBlur = 25;
+
+    ctx.fillText(text, 256, 75);
+
+    const texture = new THREE.CanvasTexture(canvas);
+
+    const sprite = new THREE.Sprite(
+        new THREE.SpriteMaterial({
+            map: texture,
+            transparent: true,
+            depthWrite: false
+        })
+    );
+
+    sprite.scale.set(5, 1.25, 1);
+
+    return sprite;
+}
+
+const words = [
+    'I LOVE YOU',
+    'FOREVER LOVE',
+    'YOU ARE MY WORLD',
+    'MY ONLY STAR',
+    'LOVE YOU ALWAYS',
+    'YOU ARE SPECIAL',
+    'MY HEART IS YOURS'
+];
+
+const floatingWords = [];
+
+words.forEach((word, i) => {
+
+    const text = createText(word);
+
+    const angle = i / words.length * Math.PI * 2;
+
+    text.position.set(
+        Math.cos(angle) * 10,
+        0.3,
+        Math.sin(angle) * 10
+    );
+
+    galaxy.add(text);
+
+    floatingWords.push({
+        object: text,
+        angle: angle
+    });
+});
+
+/* ================= FLOATING HEARTS ================= */
+
+const floatingHearts = [];
+
+function createFloatingHeart() {
+
+    const canvas = document.createElement('canvas');
+
+    canvas.width = 128;
+    canvas.height = 128;
+
+    const ctx = canvas.getContext('2d');
+
+    ctx.font = '100px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#ff269c';
+    ctx.shadowColor = '#ff1493';
+    ctx.shadowBlur = 25;
+
+    ctx.fillText('♥', 64, 95);
+
+    const texture = new THREE.CanvasTexture(canvas);
+
+    const sprite = new THREE.Sprite(
+        new THREE.SpriteMaterial({
+            map: texture,
+            transparent: true
+        })
+    );
+
+    const angle = Math.random() * Math.PI * 2;
+    const radius = 8 + Math.random() * 7;
+
+    sprite.position.set(
+        Math.cos(angle) * radius,
+        Math.random() * 4,
+        Math.sin(angle) * radius
+    );
+
+    sprite.scale.set(0.7, 0.7, 1);
+
+    scene.add(sprite);
+
+    floatingHearts.push({
+        object: sprite,
+        angle: angle,
+        radius: radius,
+        speed: 0.2 + Math.random() * 0.4
+    });
+}
+
+for (let i = 0; i < 30; i++) {
+    createFloatingHeart();
+}
+
+/* ================= ANIMATION ================= */
+
+const clock = new THREE.Clock();
+
+function animate() {
+
+    requestAnimationFrame(animate);
+
+    const time = clock.getElapsedTime();
+
+    galaxyParticles.rotation.y = time * 0.08;
+
+    heart.rotation.y = Math.sin(time) * 0.15;
+    heart.position.y = Math.sin(time * 1.5) * 0.15;
+
+    rings.forEach((ring, i) => {
+        ring.rotation.z = time * (0.08 + i * 0.02);
+    });
+
+    floatingWords.forEach((item, i) => {
+
+        item.object.position.y =
+            0.4 + Math.sin(time * 1.5 + i) * 0.3;
+
+        item.object.position.x =
+            Math.cos(item.angle + time * 0.04) * 10;
+
+        item.object.position.z =
+            Math.sin(item.angle + time * 0.04) * 10;
+    });
+
+    floatingHearts.forEach(item => {
+
+        item.angle += item.speed * 0.003;
+
+        item.object.position.x =
+            Math.cos(item.angle) * item.radius;
+
+        item.object.position.z =
+            Math.sin(item.angle) * item.radius;
+
+        item.object.position.y +=
+            Math.sin(time + item.angle) * 0.002;
+    });
+
+    stars.rotation.y = time * 0.005;
+
+    controls.update();
+
+    renderer.render(scene, camera);
+}
+
 animate();
 
-window.addEventListener('resize',()=>{
- camera.aspect=innerWidth/innerHeight;
- camera.updateProjectionMatrix();
- renderer.setSize(innerWidth,innerHeight);
- renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+/* ================= RESIZE ================= */
+
+window.addEventListener('resize', () => {
+
+    camera.aspect = window.innerWidth / window.innerHeight;
+
+    camera.updateProjectionMatrix();
+
+    renderer.setSize(
+        window.innerWidth,
+        window.innerHeight
+    );
+
 });
 
-// Music controls
-const audio=document.querySelector('#audio');
-const musicBtn=document.querySelector('#musicBtn');
-document.querySelector('#musicFile').addEventListener('change',e=>{
- const file=e.target.files[0];if(!file)return;
- if(audio.src)URL.revokeObjectURL(audio.src);
- audio.src=URL.createObjectURL(file);
- audio.play().then(()=>musicBtn.textContent='Ⅱ إيقاف الموسيقى').catch(()=>toast('اضغط تشغيل الموسيقى لبدء الأغنية'));
-});
-musicBtn.addEventListener('click',async()=>{
- if(!audio.src){toast('اختار ملف الأغنية الأول ♫');return}
- if(audio.paused){try{await audio.play();musicBtn.textContent='Ⅱ إيقاف الموسيقى'}catch{toast('تعذر تشغيل الأغنية')}}else{audio.pause();musicBtn.textContent='▶ تشغيل الموسيقى'}
-});
-
-// Enter galaxy
-document.querySelector('#enterBtn').addEventListener('click',()=>{
- document.querySelector('#intro').classList.add('hide');
- toast('أهلًا بيكم في مجرتكم ♡');
-});
-
-// Love messages
-const messages=[
- 'وسط مليارات النجوم… إنتِ مجرتي المفضلة ✨',
- 'كل كوكب له مدار… وأنا مداري حواليكي ♡',
- 'حتى أبعد نجمة مش بعيدة عن خيالي لما تكوني فيه 💗',
- 'عالم واسع… بس أجمل مكان فيه هو وجودك 🌙',
- 'كل النجوم بتنور، لكن نجمتك ليها حكاية مختلفة ✨'
-];
-let msg=0;
-document.querySelector('#messageBtn').addEventListener('click',()=>{
- msg=(msg+1)%messages.length;
- document.querySelector('#message').textContent=messages[msg];
-});
-
-// Pause and reset
-document.querySelector('#pauseBtn').addEventListener('click',e=>{
- running=!running;
- e.currentTarget.textContent=running?'Ⅱ إيقاف الحركة':'▶ تشغيل الحركة';
-});
-document.querySelector('#resetBtn').addEventListener('click',()=>{
- controls.reset();
- camera.position.set(0,24,48);
- controls.target.set(0,0,0);
- controls.update();
-});
-
-function toast(text){
- const el=document.querySelector('#toast');
- el.textContent=text;el.classList.add('show');
- clearTimeout(toast.timer);
- toast.timer=setTimeout(()=>el.classList.remove('show'),2200);
-}
 </script>
+
 </body>
 </html>
